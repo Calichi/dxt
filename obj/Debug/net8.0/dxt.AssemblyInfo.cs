@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("dxt")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+7afcc1bdae39b8f527b7016598e4b54954466147")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+fe500f0f8db708388c54e37b870da9bb0589ce85")]
 [assembly: System.Reflection.AssemblyProductAttribute("dxt")]
 [assembly: System.Reflection.AssemblyTitleAttribute("dxt")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
