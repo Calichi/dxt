@@ -1,27 +1,30 @@
-﻿namespace dxt.Services;
+﻿using Microsoft.EntityFrameworkCore;
 
-public static class Player
+namespace dxt.Services;
+
+public class Player(Data.Sport sport)
 {
-    static long count = 0;
-    readonly static List<Models.Player> container = [];
+    public async Task<List<Models.Player>> GetAll() => await sport.Players.ToListAsync();
 
-    public static List<Models.Player> GetAll() => container;
-
-    public static void Add(Models.Player player) {
-        player.Id = ++count;
-        container.Add(player);
+    public async Task Add(Models.Player player) {
+        await sport.Players.AddAsync(player);
+        await sport.SaveChangesAsync();
     }
 
-    public static Models.Player? Get(long playerId) =>
-        container.FirstOrDefault(item => item.Id == playerId);
+    public async Task<Models.Player?> Get(long playerId) =>
+        await sport.Players.FirstOrDefaultAsync(item => item.Id == playerId);
 
-    public static void Delete(long playerId) {
-        if(Get(playerId) is Models.Player player)
-            container.Remove(player);
+    public async Task Delete(long playerId) {
+        if(await Get(playerId) is Models.Player player) {
+            sport.Players.Remove(player);
+            await sport.SaveChangesAsync();
+        }
     }
 
-    public static void Update(Models.Player player) {
-        var index = container.FindIndex(item => item.Id == player.Id);
-        if(index != -1) container[index] = player;
+    public async Task Update(Models.Player player) {
+        if(await Get(player.Id) is not null) {
+            sport.Players.Update(player);
+            await sport.SaveChangesAsync();
+        }
     }
 }
