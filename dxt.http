@@ -1,0 +1,16 @@
+@dxt_HostAddress = https://localhost:7056
+
+GET {{dxt_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
+
+GET {{dxt_HostAddress}}/player/
+Accept: application/json
+
+###
+
+GET {{dxt_HostAddress}}/player/1
+Accept: application/json
+
+###
