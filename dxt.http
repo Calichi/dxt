@@ -1,4 +1,4 @@
-@dxt_HostAddress = https://localhost:7056
+@dxt_HostAddress = https://dxt.azurewebsites.net
 
 GET {{dxt_HostAddress}}/weatherforecast/
 Accept: application/json
