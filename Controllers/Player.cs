@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace dxt.Controllers;
 
@@ -7,6 +9,8 @@ namespace dxt.Controllers;
 public class Player(Services.Player sport) : ControllerBase
 {
     [HttpGet]
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public async Task<ActionResult<List<Models.Player>>> Get() =>
         await sport.GetAll();
 
