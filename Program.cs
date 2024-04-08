@@ -12,6 +12,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddAuthorization();
 
 var connection = String.Empty;
 if (builder.Environment.IsDevelopment())
