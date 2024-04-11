@@ -24,7 +24,7 @@ namespace dxt.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("dxt.Models.Player", b =>
+            modelBuilder.Entity("dxt.Model.Player", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()

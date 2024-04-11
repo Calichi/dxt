@@ -14,14 +14,14 @@ public class Player(Services.Player sport) : ControllerBase
     [HttpGet]
     [Authorize()]
     [RequiredScope("Players.Read.All")]
-    public async Task<ActionResult<List<Models.Player>>> Get() =>
+    public async Task<ActionResult<List<Model.Player>>> Get() =>
         await sport.GetAll();
 
     [HttpGet("{id}")]
     [Authorize]
     [RequiredScope("Players.Read.All")]
-    public async Task<ActionResult<Models.Player>> Get(long id) {
-        if(await sport.Get(id) is Models.Player player)
+    public async Task<ActionResult<Model.Player>> Get(long id) {
+        if(await sport.Get(id) is Model.Player player)
             return player;
         return NotFound();
     }
@@ -29,7 +29,7 @@ public class Player(Services.Player sport) : ControllerBase
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(Models.Player player) {
+    public async Task<IActionResult> Create(Model.Player player) {
         player.AccountId = AccountId;
         await sport.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
@@ -38,7 +38,7 @@ public class Player(Services.Player sport) : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
     [RequiredScope("Players.Update.Self")]
-    public async Task<IActionResult> Update(long id, Models.Player player) {
+    public async Task<IActionResult> Update(long id, Model.Player player) {
         if(id != player.Id || player.AccountId != AccountId) {
             return BadRequest();
         }else if(await sport.Get(id) is not null) {
