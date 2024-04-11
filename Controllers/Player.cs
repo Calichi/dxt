@@ -18,7 +18,8 @@ public class Player(Services.Player sport) : ControllerBase
         await sport.GetAll();
 
     [HttpGet("{id}")]
-    [Authorize("Players.Read.All")]
+    [Authorize]
+    [RequiredScope("Players.Read.All")]
     public async Task<ActionResult<Models.Player>> Get(long id) {
         if(await sport.Get(id) is Models.Player player)
             return player;
@@ -26,7 +27,8 @@ public class Player(Services.Player sport) : ControllerBase
     }
 
     [HttpPost]
-    [Authorize("Players.Write.All")]
+    [Authorize]
+    [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> Create(Models.Player player) {
         player.AccountId = AccountId;
         await sport.Add(player);
@@ -34,7 +36,8 @@ public class Player(Services.Player sport) : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize("Players.Update.Self")]
+    [Authorize]
+    [RequiredScope("Players.Update.Self")]
     public async Task<IActionResult> Update(long id, Models.Player player) {
         if(id != player.Id || player.AccountId != AccountId) {
             return BadRequest();
