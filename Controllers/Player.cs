@@ -12,7 +12,8 @@ public class Player(Services.Player sport) : ControllerBase
     string? AccountId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
     [HttpGet]
-    [Authorize("Players.Read.All")]
+    [Authorize]
+    [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
     public async Task<ActionResult<List<Models.Player>>> Get() =>
         await sport.GetAll();
 
