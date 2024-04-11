@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using dxt.Data;
 
@@ -10,9 +11,11 @@ using dxt.Data;
 namespace dxt.Migrations
 {
     [DbContext(typeof(Sport))]
-    partial class SportModelSnapshot : ModelSnapshot
+    [Migration("20240411031534_NewFieldAccountId")]
+    partial class NewFieldAccountId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
