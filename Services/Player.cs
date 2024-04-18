@@ -11,10 +11,13 @@ public class Player(Data.Sport sport)
         await sport.SaveChangesAsync();
     }
 
-    public async Task<Model.Player?> Get(long playerId) =>
+    public async Task<Model.Player?> Get(string playerId) =>
         await sport.Players.FirstOrDefaultAsync(item => item.Id == playerId);
 
-    public async Task Delete(long playerId) {
+    public async Task<bool> Contains(string id) =>
+        await sport.Players.FindAsync(id) is not null;
+
+    public async Task Delete(string playerId) {
         if(await Get(playerId) is Model.Player player) {
             sport.Players.Remove(player);
             await sport.SaveChangesAsync();

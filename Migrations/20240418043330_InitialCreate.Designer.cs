@@ -11,8 +11,8 @@ using dxt.Data;
 namespace dxt.Migrations
 {
     [DbContext(typeof(Sport))]
-    [Migration("20240411031534_NewFieldAccountId")]
-    partial class NewFieldAccountId
+    [Migration("20240418043330_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,14 +26,8 @@ namespace dxt.Migrations
 
             modelBuilder.Entity("dxt.Model.Player", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("AccountId")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("FullName")
                         .HasColumnType("nvarchar(max)");
