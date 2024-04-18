@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
 
 namespace dxt.Controllers;
@@ -9,7 +10,7 @@ namespace dxt.Controllers;
 [Route("[controller]")]
 public class Player(Services.Player dtoPlayer) : ControllerBase
 {
-    string AccountId => User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+    string? AccountId => User.GetObjectId();
 
     [HttpGet]
     [Authorize()]
@@ -33,7 +34,7 @@ public class Player(Services.Player dtoPlayer) : ControllerBase
         if(await dtoPlayer.Contains(player.Id))
             return BadRequest("¡Ya existe un jugador registrado con esta cuenta!");
             
-        player.Id = AccountId;
+        player.Id = AccountId!;
         await dtoPlayer.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
     }
