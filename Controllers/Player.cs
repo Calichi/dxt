@@ -10,8 +10,6 @@ namespace dxt.Controllers;
 [Route("[controller]")]
 public class Player(Services.Player dtoPlayer) : ControllerBase
 {
-    string? AccountId => User.GetObjectId();
-
     [HttpGet]
     [Authorize()]
     [RequiredScope("Players.Read.All")]
@@ -32,6 +30,9 @@ public class Player(Services.Player dtoPlayer) : ControllerBase
     [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> Create(Model.Player player) {
         player.Id = User.GetObjectId()!;
+        if(await dtoPlayer.Contains(player.Id))
+            return Conflict("¡Esta cuenta ya esta registrada!");
+
         await dtoPlayer.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
     }
