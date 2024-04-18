@@ -31,7 +31,7 @@ public class Player(Services.Player dtoPlayer) : ControllerBase
     [Authorize]
     [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> Create(Model.Player player) {
-        player.Id = AccountId!;
+        //player.Id = AccountId!;
         await dtoPlayer.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
     }
