@@ -31,9 +31,6 @@ public class Player(Services.Player dtoPlayer) : ControllerBase
     [Authorize]
     [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> Create(Model.Player player) {
-        if(await dtoPlayer.Contains(player.Id))
-            return BadRequest("¡Ya existe un jugador registrado con esta cuenta!");
-            
         player.Id = AccountId!;
         await dtoPlayer.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
