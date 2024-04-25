@@ -46,7 +46,7 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
             BlobContainerClient container = await _blob.CreateBlobContainerAsync(player.Id);
 
             if(await container.ExistsAsync()) {
-                var blob = container.GetBlobClient("imageProfile");
+                var blob = container.GetBlobClient(imageFile.FileName);
                 await blob.UploadAsync(imageFile.OpenReadStream(), true);
                 player.ImageProfile = blob.Uri.ToString();
             }
