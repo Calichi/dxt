@@ -29,31 +29,31 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(IFormFile imageFile, Model.Player player) {
-        player.Id = User.GetObjectId()!;
-        if(await dtoPlayer.Contains(player.Id))
+    public async Task<IActionResult> Create(IFormFile image, [FromForm]Model.Player model) {
+        model.Id = User.GetObjectId()!;
+        if(await dtoPlayer.Contains(model.Id))
             return Conflict("¡Esta cuenta ya esta registrada!");
 
         bool isThereNotContainerYet = true;
         await foreach(var item in _blob.GetBlobContainersAsync()) {
-            if(item.Name == player.Id) {
+            if(item.Name == model.Id) {
                 isThereNotContainerYet = false;
                 break;
             }
         };
 
         if(isThereNotContainerYet) {
-            BlobContainerClient container = await _blob.CreateBlobContainerAsync(player.Id);
+            BlobContainerClient container = await _blob.CreateBlobContainerAsync(model.Id);
 
             if(await container.ExistsAsync()) {
-                var blob = container.GetBlobClient(imageFile.FileName);
-                await blob.UploadAsync(imageFile.OpenReadStream(), true);
-                player.ImageProfile = blob.Uri.ToString();
+                var blob = container.GetBlobClient(image.FileName);
+                await blob.UploadAsync(image.OpenReadStream(), true);
+                model.ImageProfile = blob.Uri.ToString();
             }
         }
 
-        await dtoPlayer.Add(player);
-        return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
+        await dtoPlayer.Add(model);
+        return CreatedAtAction(nameof(Get), new {id = model.Id}, model);
     }
 
     [HttpPut("{id}")]
