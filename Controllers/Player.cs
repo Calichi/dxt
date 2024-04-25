@@ -29,32 +29,27 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(IFormFile image, [FromForm]string model) {
-        // model.Id = User.GetObjectId()!;
-        // if(await dtoPlayer.Contains(model.Id))
-        //     return Conflict("¡Esta cuenta ya esta registrada!");
+    public async Task<IActionResult> Create(Model.Player model) {
+        //model.Id = User.GetObjectId()!;
+        if(await dtoPlayer.Contains(model.Id))
+            return Conflict("¡Esta cuenta ya esta registrada!");
 
-        // bool isThereNotContainerYet = true;
-        // await foreach(var item in _blob.GetBlobContainersAsync()) {
-        //     if(item.Name == model.Id) {
-        //         isThereNotContainerYet = false;
-        //         break;
-        //     }
-        // };
+        await dtoPlayer.Add(model);
+        return CreatedAtAction(nameof(Get), new {id = model.Id}, model);
+    }
 
-        // if(isThereNotContainerYet) {
-        //     BlobContainerClient container = await _blob.CreateBlobContainerAsync(model.Id);
+    [HttpPost("{id}")]
+    [Authorize]
+    [RequiredScope("Players.Write.All")]
+    public async Task<ActionResult> UploadImageProfile(string id, IFormFile image) {
+        var container = _blob.GetBlobContainerClient(id) ?? await _blob.CreateBlobContainerAsync(id);
+        
+        if(await container.ExistsAsync())
+            return BadRequest("BLOB: Aún no se ha creado el contenedor");
 
-        //     if(await container.ExistsAsync()) {
-        //         var blob = container.GetBlobClient(image.FileName);
-        //         await blob.UploadAsync(image.OpenReadStream(), true);
-        //         model.ImageProfile = blob.Uri.ToString();
-        //     }
-        // }
-
-        // await dtoPlayer.Add(model);
-        //return CreatedAtAction(nameof(Get), new {id = model.Id}, model);
-        return Ok();
+        var blob = container.GetBlobClient(image.FileName);
+        await blob.UploadAsync(image.OpenReadStream(), true);
+        return Content(blob.Uri.ToString());
     }
 
     [HttpPut("{id}")]
