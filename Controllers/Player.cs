@@ -3,12 +3,13 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web;
 using Microsoft.Identity.Web.Resource;
+using Azure.Storage.Blobs;
 
 namespace dxt.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class Player(Services.Player dtoPlayer) : ControllerBase
+public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : ControllerBase
 {
     [HttpGet]
     [Authorize()]
@@ -28,10 +29,28 @@ public class Player(Services.Player dtoPlayer) : ControllerBase
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(Model.Player player) {
+    public async Task<IActionResult> Create(IFormFile imageFile, Model.Player player) {
         player.Id = User.GetObjectId()!;
         if(await dtoPlayer.Contains(player.Id))
             return Conflict("¡Esta cuenta ya esta registrada!");
+
+        bool isThereNotContainerYet = true;
+        await foreach(var item in _blob.GetBlobContainersAsync()) {
+            if(item.Name == player.Id) {
+                isThereNotContainerYet = false;
+                break;
+            }
+        };
+
+        if(isThereNotContainerYet) {
+            BlobContainerClient container = await _blob.CreateBlobContainerAsync(player.Id);
+
+            if(await container.ExistsAsync()) {
+                var blob = container.GetBlobClient("imageProfile");
+                await blob.UploadAsync(imageFile.OpenReadStream(), true);
+                player.ImageProfile = blob.Uri.ToString();
+            }
+        }
 
         await dtoPlayer.Add(player);
         return CreatedAtAction(nameof(Get), new {id = player.Id}, player);
