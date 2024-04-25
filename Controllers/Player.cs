@@ -29,7 +29,7 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(IFormFile image, [FromForm]Model.Player model) {
+    public async Task<IActionResult> Create(IFormFile image, [FromForm]string model) {
         // model.Id = User.GetObjectId()!;
         // if(await dtoPlayer.Contains(model.Id))
         //     return Conflict("¡Esta cuenta ya esta registrada!");
