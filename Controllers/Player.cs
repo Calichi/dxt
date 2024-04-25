@@ -42,7 +42,19 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
     [Authorize]
     [RequiredScope("Players.Write.All")]
     public async Task<ActionResult> UploadImageProfile(string id, IFormFile image) {
-        var container = _blob.GetBlobContainerClient(id) ?? await _blob.CreateBlobContainerAsync(id);
+        BlobContainerClient container = null!;
+        string message = "";
+        try {
+            container = _blob.GetBlobContainerClient(id);
+        } catch(Exception ex) {
+            message = $"GetBlob:{ex.Message}\n";
+        }
+        try {
+        container ??= await _blob.CreateBlobContainerAsync(id);
+        } catch(Exception ex) {
+            message += $"CreateBlob:{ex.Message}";
+            return BadRequest(message);
+        }
         
         if(await container.ExistsAsync())
             return BadRequest("BLOB: Aún no se ha creado el contenedor");
