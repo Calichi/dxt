@@ -53,11 +53,11 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
         container ??= await _blob.CreateBlobContainerAsync(id);
         } catch(Exception ex) {
             message += $"CreateBlob:{ex.Message}";
-            return BadRequest(message);
+            return Content(message);
         }
 
         if(!await container.ExistsAsync())
-            return BadRequest("BLOB: Aún no se ha creado el contenedor");
+            return Content("BLOB: Aún no se ha creado el contenedor");
 
          var blob = container.GetBlobClient(image.FileName);
          await blob.UploadAsync(image.OpenReadStream(), true);
