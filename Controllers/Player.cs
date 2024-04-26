@@ -55,13 +55,13 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
             message += $"CreateBlob:{ex.Message}";
             return BadRequest(message);
         }
-        return Ok("Good Job!");
-        // if(await container.ExistsAsync())
-        //     return BadRequest("BLOB: Aún no se ha creado el contenedor");
 
-        // var blob = container.GetBlobClient(image.FileName);
-        // await blob.UploadAsync(image.OpenReadStream(), true);
-        // return Content(blob.Uri.ToString());
+        if(!await container.ExistsAsync())
+            return BadRequest("BLOB: Aún no se ha creado el contenedor");
+
+         var blob = container.GetBlobClient(image.FileName);
+         await blob.UploadAsync(image.OpenReadStream(), true);
+         return Content(blob.Uri.ToString());
     }
 
     [HttpPut("{id}")]
