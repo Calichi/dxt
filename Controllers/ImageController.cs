@@ -31,8 +31,12 @@ public class ImageController(BlobServiceClient _blob) : ControllerBase
         if(! await container.ExistsAsync())
             return NotFound($"¡IMAGEN NO ENCONTRADA: {fileName}!");
 
+        try{
         var blob = container.GetBlobClient(fileName);
         using var stream = await blob.OpenReadAsync();
         return File(stream, "image/webp");
+        } catch (Exception ex) {
+            return BadRequest($"ERROR_DE_SERVIDOR_BLOB: {ex}");
+        }
     }
 }
