@@ -23,11 +23,11 @@ public class ImageController(BlobServiceClient _blob) : ControllerBase
         return Content(blob.Uri.ToString());
     }
 
-    [HttpGet("{containerName}")]
+    [HttpGet("{id}")]
     [Authorize]
     [RequiredScope("Players.Read.All")]
-    public async Task<IActionResult> Get(string containerName, string fileName) {
-        var container = _blob.GetBlobContainerClient(containerName);
+    public async Task<IActionResult> Get(string id, string fileName) {
+        var container = _blob.GetBlobContainerClient(id);
         if(! await container.ExistsAsync())
             return NotFound("¡IMAGEN NO ENCONTRADA!");
 
