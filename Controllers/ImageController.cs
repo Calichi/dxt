@@ -29,7 +29,7 @@ public class ImageController(BlobServiceClient _blob) : ControllerBase
     public async Task<IActionResult> Get(string id, string fileName) {
         var container = _blob.GetBlobContainerClient(id);
         if(! await container.ExistsAsync())
-            return NotFound("¡IMAGEN NO ENCONTRADA!");
+            return NotFound($"¡IMAGEN NO ENCONTRADA: {fileName}!");
 
         var blob = container.GetBlobClient(fileName);
         using var stream = await blob.OpenReadAsync();
