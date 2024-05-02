@@ -33,7 +33,7 @@ public class ImageController(BlobServiceClient _blob) : ControllerBase
 
         try{
         var blob = container.GetBlobClient(fileName);
-        using var stream = await blob.OpenReadAsync();
+        var stream = await blob.OpenReadAsync();
         return File(stream, "image/webp");
         } catch (Exception ex) {
             return BadRequest($"ERROR_DE_SERVIDOR_BLOB: {ex}");
