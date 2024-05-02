@@ -30,38 +30,11 @@ public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : Contro
     [Authorize]
     [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> Create(Model.Player model) {
-        //model.Id = User.GetObjectId()!;
         if(await dtoPlayer.Contains(model.Id))
             return Conflict("¡Esta cuenta ya esta registrada!");
 
         await dtoPlayer.Add(model);
         return CreatedAtAction(nameof(Get), new {id = model.Id}, model);
-    }
-
-    [HttpPost("{id}")]
-    [Authorize]
-    [RequiredScope("Players.Write.All")]
-    public async Task<ActionResult> UploadImageProfile(string id, IFormFile image) {
-        BlobContainerClient container = null!;
-        string message = "";
-        try {
-            container = _blob.GetBlobContainerClient(id);
-        } catch(Exception ex) {
-            message = $"GetBlob:{ex.Message}\n";
-        }
-        try {
-        container ??= await _blob.CreateBlobContainerAsync(id);
-        } catch(Exception ex) {
-            message += $"CreateBlob:{ex.Message}";
-            return Content(message);
-        }
-
-        if(!await container.ExistsAsync()) await container.CreateIfNotExistsAsync();
-            //return Content("BLOB: Aún no se ha creado el contenedor");
-
-         var blob = container.GetBlobClient(image.FileName);
-         await blob.UploadAsync(image.OpenReadStream(), true);
-         return Content(blob.Uri.ToString());
     }
 
     [HttpPut("{id}")]
