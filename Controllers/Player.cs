@@ -9,7 +9,7 @@ namespace dxt.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class Player(Services.Player dtoPlayer, BlobServiceClient _blob) : ControllerBase
+public class Player(Services.Player dtoPlayer) : ControllerBase
 {
     [HttpGet]
     [Authorize()]

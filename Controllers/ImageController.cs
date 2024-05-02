@@ -33,6 +33,6 @@ public class ImageController(BlobServiceClient _blob) : ControllerBase
 
         var blob = container.GetBlobClient(fileName);
         using var stream = await blob.OpenReadAsync();
-        return File(stream, "image/jpeg");
+        return File(stream, "image/webp");
     }
 }
