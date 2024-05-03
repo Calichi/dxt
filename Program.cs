@@ -30,8 +30,17 @@ if (builder.Environment.IsDevelopment())
     connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
 }
 
-builder.Services.AddDbContext<dxt.Data.Sport>(options =>
-    options.UseSqlServer(connection));
+builder.Services.AddDbContext<dxt.Data.Sport>(
+    options => options.UseSqlServer(
+        connection, sqlServerOptionsAction: sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 3,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorNumbersToAdd: null
+            );
+        })
+);
 
 var app = builder.Build();
 
