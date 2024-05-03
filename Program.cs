@@ -36,7 +36,7 @@ builder.Services.AddDbContext<dxt.Data.Sport>(
         {
             sqlOptions.EnableRetryOnFailure(
                 maxRetryCount: 3,
-                maxRetryDelay: TimeSpan.FromSeconds(10),
+                maxRetryDelay: TimeSpan.FromSeconds(5),
                 errorNumbersToAdd: null
             );
         })
