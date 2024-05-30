@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
-namespace dxt.Controllers;
+namespace dxt.Controller;
 
 [ApiController]
 [Route("player/[controller]")]

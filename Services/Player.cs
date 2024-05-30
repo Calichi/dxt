@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace dxt.Services;
+namespace dxt.Service;
 
-public class Player(Data.Sport sport)
+public class Player(Database.Context sport)
 {
     public async Task<List<Model.Player>> GetAll() => await sport.Players.ToListAsync();
 

@@ -7,7 +7,7 @@ using Azure.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddScoped<dxt.Services.Player>();
+builder.Services.AddScoped<dxt.Service.Player>();
 builder.Services.AddAzureClients(x =>
 {
     x.AddBlobServiceClient(new Uri("https://chapps0dxt.blob.core.windows.net"));
@@ -30,7 +30,7 @@ if (builder.Environment.IsDevelopment())
     connection = Environment.GetEnvironmentVariable("AZURE_SQL_CONNECTIONSTRING");
 }
 
-builder.Services.AddDbContext<dxt.Data.Sport>(
+builder.Services.AddDbContext<dxt.Database.Context>(
     options => options.UseSqlServer(
         connection, sqlServerOptionsAction: sqlOptions =>
         {

@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
-namespace dxt.Controllers;
+namespace dxt.Controller;
 
 [ApiController]
 [Route("[controller]")]
-public class Player(Services.Player dtoPlayer) : ControllerBase
+public class Player(Service.Player dtoPlayer) : ControllerBase
 {
     [HttpGet]
     [Authorize()]
