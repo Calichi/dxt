@@ -34,9 +34,9 @@ public class Team(Service.Team teams) : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<ActionResult<List<Model.Team>>> GetAsync()
+    public async Task<ActionResult<string>> GetAsync()
     {
-        return Ok();
+        return "funciona";
         //return Ok(await teams.GetAsync());
     }
 }
