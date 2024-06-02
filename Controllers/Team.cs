@@ -11,12 +11,11 @@ public class Team(Service.Team teams) : ControllerBase
     [Authorize]
     public async Task<IActionResult> RegisterAsync(Model.Team team)
     {
-        if ( await teams.ContainsAsync( team ) )
-            return Conflict("¡Ya existe un equipo registrado con este nombre!");
-
-
         try
         {
+            if ( await teams.ContainsAsync( team ) )
+                return Conflict("¡Ya existe un equipo registrado con este nombre!");
+
             await teams.AddAsync( team );
             var result = CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
             return result;
