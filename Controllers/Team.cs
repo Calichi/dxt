@@ -18,7 +18,8 @@ public class Team(Service.Team teams) : ControllerBase
         try
         {
             await teams.AddAsync( team );
-            return CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
+            var result = CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
+            return result;
         }
         catch ( Exception ex )
         {
