@@ -34,6 +34,7 @@ public class Team(Service.Team teams) : ControllerBase
     }
 
     [HttpGet()]
+    [Authorize]
     public async Task<ActionResult<string>> GetAsync()
     {
         return "funciona";
