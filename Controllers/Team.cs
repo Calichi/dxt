@@ -32,4 +32,9 @@ public class Team(Service.Team teams) : ControllerBase
         return NotFound();
     }
 
+    [HttpGet()]
+    public async Task<ActionResult<ICollection<Model.Team>>> GetAsync()
+    {
+        return Ok(await teams.GetAsync());
+    }
 }
