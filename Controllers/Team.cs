@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Identity.Web.Resource;
 
@@ -33,8 +34,9 @@ public class Team(Service.Team teams) : ControllerBase
     }
 
     [HttpGet()]
-    public async Task<ActionResult<ICollection<Model.Team>>> GetAsync()
+    public async Task<ActionResult<List<Model.Team>>> GetAsync()
     {
-        return Ok(await teams.GetAsync());
+        return Ok();
+        //return Ok(await teams.GetAsync());
     }
 }

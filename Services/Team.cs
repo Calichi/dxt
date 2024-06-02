@@ -16,7 +16,7 @@ public class Team(Database.Context db)
     public async Task<Model.Team?> GetAsync(long id) =>
         await db.Teams.FindAsync( id );
 
-    public async Task<ICollection<Model.Team>> GetAsync()
+    public async Task<List<Model.Team>> GetAsync()
     {
         return await db.Teams.ToListAsync();
     }
