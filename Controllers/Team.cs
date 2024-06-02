@@ -15,7 +15,15 @@ public class Team(Service.Team teams) : ControllerBase
             return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
         await teams.AddAsync( team );
-        return CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
+
+        try
+        {
+            return CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
+        }
+        catch ( Exception ex )
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
