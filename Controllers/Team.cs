@@ -14,10 +14,10 @@ public class Team(Service.Team teams) : ControllerBase
         if ( await teams.ContainsAsync( team ) )
             return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
-        await teams.AddAsync( team );
 
         try
         {
+            await teams.AddAsync( team );
             return CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
         }
         catch ( Exception ex )
