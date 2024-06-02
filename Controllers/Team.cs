@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web.Resource;
 
 namespace dxt.Controller;
 
@@ -9,6 +10,7 @@ public class Team(Service.Team teams) : ControllerBase
 {
     [HttpPost]
     [Authorize]
+    [RequiredScope("Players.Write.All")]
     public async Task<IActionResult> RegisterAsync(Model.Team team)
     {
         try
@@ -28,6 +30,7 @@ public class Team(Service.Team teams) : ControllerBase
 
     [HttpGet("{id}")]
     [Authorize]
+    [RequiredScope("Players.Read.All")]
     public async Task<ActionResult<Model.Team>> GetAsync(long id)
     {
         if ( await teams.GetAsync(id) is Model.Team team )
@@ -40,6 +43,6 @@ public class Team(Service.Team teams) : ControllerBase
     [Authorize]
     public async Task<ActionResult<List<Model.Team>>> GetAsync()
     {
-        return await teams.GetAsync();
+        return await teams.GetAllAsync();
     }
 }
