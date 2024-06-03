@@ -24,7 +24,7 @@ public class Team(Service.Team teams) : ControllerBase
         }
         catch ( Exception ex )
         {
-            return BadRequest(ex);
+            return BadRequest($"HANDLED ERROR: {ex}");
         }
     }
 
@@ -33,15 +33,22 @@ public class Team(Service.Team teams) : ControllerBase
     [RequiredScope("Players.Read.All")]
     public async Task<ActionResult<Model.Team>> GetAsync(long id)
     {
-        if ( await teams.GetAsync(id) is Model.Team team )
-            return team;
-            
-        return NotFound();
+        try
+        {
+            if ( await teams.GetAsync(id) is Model.Team team )
+                return team;
+                
+            return NotFound();
+        }
+        catch ( Exception ex )
+        {
+            return BadRequest($"HANDLED ERROR: {ex}");
+        }
     }
 
     [HttpGet]
     [Authorize]
-    public async Task<ActionResult<List<Model.Team>>> GetAsync()
+    public async Task<ActionResult<List<Model.Team>>> GetAllAsync()
     {
         return await teams.GetAllAsync();
     }
