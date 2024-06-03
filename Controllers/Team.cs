@@ -19,7 +19,7 @@ public class Team(Service.Team teams) : ControllerBase
                 return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
             await teams.AddAsync( team );
-            var result = CreatedAtAction(nameof(Get), new {id = team.Id}, team);
+            var result = CreatedAtAction(nameof(GetAsync), new {id = team.Id}, team);
             return result;
         }
         catch ( Exception ex )
@@ -29,9 +29,10 @@ public class Team(Service.Team teams) : ControllerBase
     }
 
     [HttpGet("{id}")]
+    [ActionName(nameof(GetAsync))]
     [Authorize]
     [RequiredScope("Players.Read.All")]
-    public async Task<ActionResult<Model.Team>> Get(long id)
+    public async Task<ActionResult<Model.Team>> GetAsync(long id)
     {
         try
         {
