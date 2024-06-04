@@ -19,8 +19,7 @@ public class Team(Service.Team teams) : ControllerBase
                 return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
             teams.Add( team );
-            var result = CreatedAtAction(nameof(Get), new {id = team.Id}, team);
-            return result;
+            return CreatedAtAction(nameof(Get), new {id = team.Id}, team);
         }
         catch ( Exception ex )
         {
