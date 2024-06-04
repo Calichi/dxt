@@ -6,7 +6,9 @@ public class Team(Database.Context db)
 {
     public async Task AddAsync(Model.Team team)
     {
-        db.Update( team );
+        var player = (await db.Players.FindAsync(team.Players?.First().Id))!;
+        team.Players = [];
+        player.Teams = [team];
         await db.SaveChangesAsync();
     }
 
