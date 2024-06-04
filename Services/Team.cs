@@ -4,19 +4,20 @@ namespace dxt.Service;
 
 public class Team(Database.Context db)
 {
-    public async void Add(Model.Team team)
+    public void Add(Model.Team team)
     {
-        var player = (await db.Players.FindAsync(team.Players?.First().Id))!;
-        team.Players = [];
-        player.Teams = [team];
+        // var player = db.Players.Find(team.Players?.First().Id)!;
+        // team.Players = [];
+        // player.Teams = [team];
+        db.Update(team);
         db.SaveChanges();
     }
 
-    public async Task<bool> ContainsAsync(Model.Team team) =>
-        await db.Teams.AnyAsync( entry => entry.SearchId == team.SearchId );
+    public bool Contains(Model.Team team) =>
+        db.Teams.Any( entry => entry.SearchId == team.SearchId );
 
-    public async Task<Model.Team?> GetAsync(long id) =>
-        await db.Teams.FirstOrDefaultAsync(item => item.Id == id);
+    public Model.Team? Get(long id) =>
+        db.Teams.Find(id);
 
     public async Task<List<Model.Team>> GetAllAsync()
     {

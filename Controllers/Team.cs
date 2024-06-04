@@ -11,11 +11,11 @@ public class Team(Service.Team teams) : ControllerBase
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> RegisterAsync(Model.Team team)
+    public IActionResult Register(Model.Team team)
     {
         try
         {
-            if ( await teams.ContainsAsync( team ) )
+            if ( teams.Contains( team ) )
                 return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
             teams.Add( team );
@@ -32,11 +32,11 @@ public class Team(Service.Team teams) : ControllerBase
     [ActionName(nameof(Get))]
     [Authorize]
     [RequiredScope("Players.Read.All")]
-    public async Task<ActionResult<Model.Team>> Get(long id)
+    public ActionResult<Model.Team> Get(long id)
     {
         try
         {
-            if ( await teams.GetAsync(id) is Model.Team team )
+            if ( teams.Get(id) is Model.Team team )
                 return team;
                 
             return NotFound();
