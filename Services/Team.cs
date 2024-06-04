@@ -6,7 +6,7 @@ public class Team(Database.Context db)
 {
     public async Task AddAsync(Model.Team team)
     {
-        await db.Teams.AddAsync( team );
+        db.Update( team );
         await db.SaveChangesAsync();
     }
 
