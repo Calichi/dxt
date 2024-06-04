@@ -6,10 +6,7 @@ public class Team(Database.Context db)
 {
     public void Add(Model.Team team)
     {
-        var player = db.Players.Find(team.Players.First().Id)!;
-        team.Players = [];
-        player.Teams.Add(team);
-        //db.Update(team);
+        db.Update( team );
         db.SaveChanges();
     }
 
