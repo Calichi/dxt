@@ -18,7 +18,7 @@ public class Team(Service.Team teams) : ControllerBase
             if ( await teams.ContainsAsync( team ) )
                 return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
-            await teams.AddAsync( team );
+            teams.Add( team );
             var result = CreatedAtAction(nameof(Get), new {id = team.Id}, team);
             return result;
         }
