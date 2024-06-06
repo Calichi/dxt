@@ -1,4 +1,4 @@
-﻿namespace dxt;
+﻿namespace dxt.Service;
 
 public class Names(Database.Context db)
 {

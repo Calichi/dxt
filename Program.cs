@@ -10,6 +10,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddScoped<dxt.Service.Player>();
 builder.Services.AddScoped<dxt.Service.Team>();
+builder.Services.AddScoped<dxt.Service.Names>();
+
 builder.Services.AddAzureClients(x =>
 {
     x.AddBlobServiceClient(new Uri("https://chapps0dxt.blob.core.windows.net"));

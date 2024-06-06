@@ -6,7 +6,8 @@ namespace dxt.Controller;
 
 [ApiController]
 [Route("[controller]")]
-public class Player(Service.Player dtoPlayer) : ControllerBase
+public class Player(Service.Player dtoPlayer,
+                    Service.Names names) : ControllerBase
 {
     [HttpGet]
     [Authorize()]
@@ -26,13 +27,16 @@ public class Player(Service.Player dtoPlayer) : ControllerBase
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(Model.Player model)
+    public async Task<IActionResult> Create(Model.Player player)
     {
-        if(dtoPlayer.Contains(model.UniqueId))
+        if(dtoPlayer.Contains(player.UniqueId))
             return Conflict("¡Esta cuenta ya esta registrada!");
 
-        await dtoPlayer.Add(model);
-        return CreatedAtAction(nameof(Get), new {id = model.UniqueId}, model);
+        player.RecordNumber = names.Add(player.Name);
+        player.SearchId = player.GetComputedSearchId();
+        await dtoPlayer.Add(player);
+        
+        return CreatedAtAction(nameof(Get), new {id = player.UniqueId}, player);
     }
 
     [HttpPut("{id}")]
