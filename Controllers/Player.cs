@@ -26,31 +26,40 @@ public class Player(Service.Player dtoPlayer) : ControllerBase
     [HttpPost]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public async Task<IActionResult> Create(Model.Player model) {
-        if(await dtoPlayer.Contains(model.Id))
+    public async Task<IActionResult> Create(Model.Player model)
+    {
+        if(dtoPlayer.Contains(model.UniqueId))
             return Conflict("¡Esta cuenta ya esta registrada!");
 
         await dtoPlayer.Add(model);
-        return CreatedAtAction(nameof(Get), new {id = model.Id}, model);
+        return CreatedAtAction(nameof(Get), new {id = model.UniqueId}, model);
     }
 
     [HttpPut("{id}")]
     [Authorize]
     [RequiredScope("Players.Update.Self")]
-    public async Task<IActionResult> Update(string id, Model.Player player) {
-        if(id != player.Id) {
+    public IActionResult Update(string id, Model.Player player)
+    {
+        if(id != player.UniqueId)
+        {
             return BadRequest();
-        }else if(await dtoPlayer.Get(id) is not null) {
-            await dtoPlayer.Update(player);
+        }
+        else if(dtoPlayer.Contains(player.UniqueId))
+        {
+            dtoPlayer.Update(player);
             return NoContent();
-        } else return NotFound();
+        }
+        else return NotFound();
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(string id) {
-        if(await dtoPlayer.Get(id) is not null) {
-            await dtoPlayer.Delete(id);
+    public IActionResult Delete(string id)
+    {
+        if(dtoPlayer.GetByUniqueId(id) is Model.Player player)
+        {
+            dtoPlayer.Delete(player);
             return NoContent();
-        } else return NotFound();
+        }
+        else return NotFound();
     }
 }

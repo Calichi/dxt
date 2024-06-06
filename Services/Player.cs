@@ -11,35 +11,34 @@ public class Player(Database.Context sport)
         await sport.SaveChangesAsync();
     }
 
-    public async Task<Model.Player?> Get(string playerId)
-    {
-        var player = await sport.Players.FindAsync(playerId);
+    public Model.Player? GetByUniqueId(string uniqueId) =>
+        sport.Players.FirstOrDefault( p => p.UniqueId == uniqueId );
 
-        if (player is not null)
+    public async Task<Model.Player?> Get(string uniqueId)
+    {
+        if (GetByUniqueId(uniqueId) is Model.Player player)
         {
             player.Teams = await sport.Entry(player)
             .Collection(p => p.Teams)
             .Query()
             .Take(1)
             .ToListAsync();
+            return player;
         }
-        return player;
+        return null;
     }
 
-    public async Task<bool> Contains(string id) =>
-        await sport.Players.FindAsync(id) is not null;
+    public bool Contains(string uniqueId) => GetByUniqueId(uniqueId) is not null;
 
-    public async Task Delete(string playerId) {
-        if(await Get(playerId) is Model.Player player) {
-            sport.Players.Remove(player);
-            await sport.SaveChangesAsync();
-        }
+    public void Delete(Model.Player player)
+    {
+        sport.Players.Remove(player);
+        sport.SaveChanges();
     }
 
-    public async Task Update(Model.Player player) {
-        if(await Get(player.Id) is not null) {
-            sport.Players.Update(player);
-            await sport.SaveChangesAsync();
-        }
+    public void Update(Model.Player player)
+    {
+        sport.Players.Update(player);
+        sport.SaveChanges();
     }
 }
