@@ -6,6 +6,7 @@ public class Names(Database.Context db)
     {
         var name = Get(pName) ?? new() { Name = pName };
         name.Records++;
+        db.Update(name);
         db.SaveChanges();
         return name.Records;
     }
