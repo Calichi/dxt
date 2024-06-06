@@ -6,8 +6,8 @@ using Microsoft.Identity.Web.Resource;
 namespace dxt.Controller;
 
 [ApiController]
-[Route("player/[controller]")]
-public class ImageController(BlobServiceClient _blob) : ControllerBase
+[Route("[controller]")]
+public class Image(BlobServiceClient _blob) : ControllerBase
 {
     [HttpPost("{id}")]
     [Authorize]
