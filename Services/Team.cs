@@ -26,7 +26,7 @@ public class Team(Database.Context db)
     {
         return [..
             from team in db.Teams
-            where team.SearchId.Contains(searchId, StringComparison.CurrentCultureIgnoreCase)
+            where team.SearchId.ToLower().Contains(searchId.ToLower())
             select team
         ];
     }
