@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace dxt.Service;
 
@@ -19,5 +20,14 @@ public class Team(Database.Context db)
     public async Task<List<Model.Team>> GetAllAsync()
     {
         return await db.Teams.ToListAsync();
+    }
+
+    public List<Model.Team> Get(string searchId)
+    {
+        return [..
+            from team in db.Teams
+            where team.SearchId.Contains(searchId, StringComparison.CurrentCultureIgnoreCase)
+            select team
+        ];
     }
 }

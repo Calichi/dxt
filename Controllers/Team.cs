@@ -27,7 +27,7 @@ public class Team(Service.Team teams) : ControllerBase
         }
     }
 
-    [HttpGet("{id}")]
+    [HttpGet("{id:long}")]
     [ActionName(nameof(Get))]
     [Authorize]
     [RequiredScope("Players.Read.All")]
@@ -41,6 +41,20 @@ public class Team(Service.Team teams) : ControllerBase
             return NotFound();
         }
         catch ( Exception ex )
+        {
+            return BadRequest($"HANDLED ERROR: {ex}");
+        }
+    }
+
+    [HttpGet("{searchId}")]
+    [Authorize]
+    public ActionResult<ICollection<Model.Team>> Get(string searchId)
+    {
+        try
+        {
+            return teams.Get(searchId);
+        }
+        catch( Exception ex )
         {
             return BadRequest($"HANDLED ERROR: {ex}");
         }
