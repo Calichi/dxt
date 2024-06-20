@@ -53,11 +53,11 @@ public class Team(Service.Team teams) : ControllerBase
     [ActionName(nameof(Get))]
     [Authorize]
     [RequiredScope("Players.Read.All")]
-    public ActionResult<Model.Team> Get(long id)
+    public ActionResult<Model.Team> Get(long id, bool withPlayers = false)
     {
         try
         {
-            if ( teams.Get(id) is Model.Team team )
+            if ( teams.Get(id, withPlayers) is Model.Team team )
                 return team;
                 
             return NotFound();

@@ -36,6 +36,7 @@ public class Player(Database.Context sport)
         sport.SaveChanges();
     }
 
+
     public void Update(Model.Player player)
     {
         sport.Players.Update(player);

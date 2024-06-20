@@ -14,8 +14,14 @@ public class Team(Database.Context db)
     public bool Contains(Model.Team team) =>
         db.Teams.Any( entry => entry.SearchId == team.SearchId );
 
-    public Model.Team? Get(long id) =>
-        db.Teams.Find(id);
+    public Model.Team? Get(long id, bool withPlayers = false)
+    {
+        if(!withPlayers) return db.Teams.Find(id);
+
+        return db.Teams
+                 .Include( entry => entry.Players)
+                 .FirstOrDefault( entry => entry.Id == id );
+    }
 
     public async Task<List<Model.Team>> GetAllAsync()
     {
