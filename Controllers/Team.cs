@@ -30,14 +30,15 @@ public class Team(Service.Team teams) : ControllerBase
     [HttpPut("{id}")]
     [Authorize]
     [RequiredScope("Players.Write.All")]
-    public IActionResult Update(long id, Model.Team data)
+    public IActionResult AddPlayer(long id, Model.Player player)
     {
         try
         {
-            if (teams.Get(id) is not null)
+            if (teams.Get(id) is Model.Team team)
             {
-                teams.Add(data);
-                return Ok(data);
+                team.Players.Add( player );
+                teams.Add(team);
+                return Ok(team);
             }
             
             return NotFound($"No se encontró un equipo con el ID {id}");
