@@ -27,6 +27,27 @@ public class Team(Service.Team teams) : ControllerBase
         }
     }
 
+    [HttpPut("{id}")]
+    [Authorize]
+    [RequiredScope("Players.Write.All")]
+    public IActionResult Update(long id, Model.Team data)
+    {
+        try
+        {
+            if (teams.Get(id) is not null)
+            {
+                teams.Add(data);
+                return Ok(data);
+            }
+            
+            return NotFound($"No se encontró un equipo con el ID {id}");
+        }
+        catch (Exception ex)
+        {
+            return BadRequest($"ERROR MANEJADO: {ex}");
+        }
+    }
+
     [HttpGet("{id:long}")]
     [ActionName(nameof(Get))]
     [Authorize]
