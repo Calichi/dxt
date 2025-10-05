@@ -33,8 +33,7 @@ public class Player(Service.Player dtoPlayer,
             return Conflict("¡Esta cuenta ya esta registrada!");
 
         player.RecordNumber = names.Add(player.Name);
-        player.SearchId = player.GetComputedSearchId();
-        await dtoPlayer.Add(player);
+        await dtoPlayer.Add(player.ResolveSearchId());
         
         return CreatedAtAction(nameof(Get), new {id = player.UniqueId}, player);
     }
