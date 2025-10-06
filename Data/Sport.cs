@@ -10,22 +10,25 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<Model.TeamAffiliationRequest>()
-               .HasOne(e => e.Transmitter)
-               .WithMany(e => e.SentTeamAffiliationRequests)
-               .HasForeignKey("TransmitterId")
-               .IsRequired();
+              builder.Entity<Model.TeamAffiliationRequest>()
+                     .HasOne(e => e.Transmitter)
+                     .WithMany(e => e.SentTeamAffiliationRequests)
+                     .HasForeignKey("TransmitterId")
+                     .IsRequired()
+                     .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Entity<Model.TeamAffiliationRequest>()
-               .HasOne(e => e.Receiver)
-               .WithMany(e => e.ReceivedTeamAffiliationRequests)
-               .HasForeignKey("ReceiverId")
-               .IsRequired();
+              builder.Entity<Model.TeamAffiliationRequest>()
+                     .HasOne(e => e.Receiver)
+                     .WithMany(e => e.ReceivedTeamAffiliationRequests)
+                     .HasForeignKey("ReceiverId")
+                     .IsRequired()
+                     .OnDelete(DeleteBehavior.NoAction);
 
-        builder.Entity<Model.Team>()
-               .HasOne(e => e.Owner)
-               .WithMany()
-               .HasForeignKey("OwnerId")
-               .IsRequired();
+              builder.Entity<Model.Team>()
+                     .HasOne(e => e.Owner)
+                     .WithMany()
+                     .HasForeignKey("OwnerId")
+                     .IsRequired()
+                     .OnDelete(DeleteBehavior.Cascade);
     }
 }
