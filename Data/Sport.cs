@@ -21,5 +21,11 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
                .WithMany(e => e.ReceivedTeamAffiliationRequests)
                .HasForeignKey("ReceiverId")
                .IsRequired();
+
+        builder.Entity<Model.Team>()
+               .HasOne(e => e.Owner)
+               .WithMany()
+               .HasForeignKey("OwnerId")
+               .IsRequired();
     }
 }
