@@ -15,7 +15,7 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
                      .WithMany(e => e.SentTeamAffiliationRequests)
                      .HasForeignKey("TransmitterId")
                      .IsRequired()
-                     .OnDelete(DeleteBehavior.Cascade);
+                     .OnDelete(DeleteBehavior.NoAction);
 
               builder.Entity<Model.TeamAffiliationRequest>()
                      .HasOne(e => e.Receiver)
@@ -29,6 +29,6 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
                      .WithMany()
                      .HasForeignKey("OwnerId")
                      .IsRequired()
-                     .OnDelete(DeleteBehavior.Cascade);
+                     .OnDelete(DeleteBehavior.NoAction);
     }
 }
