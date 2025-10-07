@@ -31,7 +31,7 @@ public class Team(Database.Context db)
     public List<Model.Team> Get(string searchId)
     {
         return [..
-            from team in db.Teams
+            from team in db.Teams.Include(t => t.Owner)
             where team.SearchId.ToLower().Contains(searchId.ToLower())
             select team
         ];
