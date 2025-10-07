@@ -56,11 +56,11 @@ public class Player(Service.Player dtoPlayer,
     }
 
     [HttpDelete("{id}")]
-    public IActionResult Delete(string id)
+    public async Task<IActionResult> Delete(string id)
     {
         if(dtoPlayer.GetByUniqueId(id) is Model.Player player)
         {
-            dtoPlayer.Delete(player);
+            await dtoPlayer.DeleteAsync(player);
             return NoContent();
         }
         else return NotFound();
