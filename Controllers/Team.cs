@@ -18,6 +18,7 @@ public class Team(Service.Team teams) : ControllerBase
             if ( teams.Contains( team ) )
                 return Conflict("¡Ya existe un equipo registrado con este nombre!");
 
+            team.Players.Add(team.Owner);
             teams.Add( team );
             return CreatedAtAction(nameof(Get), new {id = team.Id}, team);
         }
