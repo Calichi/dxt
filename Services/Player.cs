@@ -39,39 +39,43 @@ public class Player(Database.Context sport)
 
     public async Task DeleteAsync(Model.Player player)
     {
-        await using var transaction = await sport.Database.BeginTransactionAsync();
-        try
+        var strategy = sport.Database.CreateExecutionStrategy();
+        await strategy.ExecuteAsync(async () =>
         {
-            // First delete player dependencies
-            await
-            sport.Teams
-                 .Where(t => EF.Property<long>(t, "OwnerId") == player.Id)
-                 .ExecuteDeleteAsync();
+            await using var transaction = await sport.Database.BeginTransactionAsync();
+            try
+            {
+                // First delete player dependencies
+                await
+                sport.Teams
+                    .Where(t => EF.Property<long>(t, "OwnerId") == player.Id)
+                    .ExecuteDeleteAsync();
 
-            await
-            sport.Entry(player)
-                 .Collection(e => e.SentTeamAffiliationRequests)
-                 .Query()
-                 .ExecuteDeleteAsync();
+                await
+                sport.Entry(player)
+                    .Collection(e => e.SentTeamAffiliationRequests)
+                    .Query()
+                    .ExecuteDeleteAsync();
 
-            await
-            sport.Entry(player)
-                 .Collection(e => e.ReceivedTeamAffiliationRequests)
-                 .Query()
-                 .ExecuteDeleteAsync();
+                await
+                sport.Entry(player)
+                    .Collection(e => e.ReceivedTeamAffiliationRequests)
+                    .Query()
+                    .ExecuteDeleteAsync();
 
-            // Then delete player
-            await
-            sport.Players
-                 .Where(p => p.Id == player.Id)
-                 .ExecuteDeleteAsync();
+                // Then delete player
+                await
+                sport.Players
+                    .Where(p => p.Id == player.Id)
+                    .ExecuteDeleteAsync();
 
-            await transaction.CommitAsync();
-        }
-        catch
-        {
-            await transaction.RollbackAsync();
-            throw;
-        }
+                await transaction.CommitAsync();
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        });
     }
 }
