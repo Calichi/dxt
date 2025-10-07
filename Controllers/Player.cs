@@ -60,7 +60,14 @@ public class Player(Service.Player dtoPlayer,
     {
         if(dtoPlayer.GetByUniqueId(id) is Model.Player player)
         {
-            await dtoPlayer.DeleteAsync(player);
+            try
+            {
+                await dtoPlayer.DeleteAsync(player);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"{ex}");
+            }
             return NoContent();
         }
         else return NotFound();
