@@ -8,6 +8,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
     public DbSet<Model.Team> Teams { get; set; }
     public DbSet<Model.Person> Persons { get; set; }
 
+    public DbSet<Model.TeamAffiliationRequest> TeamAffiliationRequests { get; set; }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
               builder.Entity<Model.TeamAffiliationRequest>()
