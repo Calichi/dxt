@@ -12,7 +12,7 @@ public class TeamAffiliationRequest(
   Services.TeamAffiliationRequest tarSvc
 ) : ControllerBase
 {
-  [Authorize, HttpPost, RequiredScope("Player.Write.All")]
+  [Authorize, HttpPost, RequiredScope("Players.Write.All")]
   public async Task<ActionResult<TAR>> Create(TAR tar)
   {
     if (tar is { Id: not 0 })
@@ -22,7 +22,7 @@ public class TeamAffiliationRequest(
     return Created(string.Empty, tar);
   }
 
-  [Authorize, HttpPatch, RequiredScope("Player.Write.All")]
+  [Authorize, HttpPatch, RequiredScope("Players.Write.All")]
   public async Task<ActionResult<TAR>> UpdateAsync(TAR tar)
   {
     if (tar is { Id: 0 })
@@ -32,7 +32,7 @@ public class TeamAffiliationRequest(
     return Ok(tar);
   }
 
-  [Authorize, HttpPatch("{amphirionId}"), RequiredScope("Player.Write.All")]
+  [Authorize, HttpPatch("{amphirionId}"), RequiredScope("Players.Write.All")]
   public async Task<ActionResult> AffiliateAsync(long amphirionId, Model.Player player)
   {
     await tarSvc.Affiliate(amphirionId, player);
