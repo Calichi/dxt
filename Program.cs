@@ -11,6 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<dxt.Service.Player>();
 builder.Services.AddScoped<dxt.Service.Team>();
 builder.Services.AddScoped<dxt.Service.Names>();
+builder.Services.AddScoped<dxt.Services.TeamAffiliationRequest>();
 
 builder.Services.AddAzureClients(x =>
 {
@@ -28,7 +29,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 builder.Services.AddAuthorization();
 
-var connection = String.Empty;
+var connection = string.Empty;
 if (builder.Environment.IsDevelopment())
 {
     builder.Configuration.AddEnvironmentVariables().AddJsonFile("appsettings.Development.json");
