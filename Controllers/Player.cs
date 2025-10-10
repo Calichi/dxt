@@ -23,17 +23,12 @@ public class Player(Service.Player dtoPlayer,
     try
     {
       if (await dtoPlayer.Get(id) is Model.Player player)
-        return player;
+        return Ok(player);
       return NotFound();
     }
     catch (Exception ex)
     {
-        return BadRequest(new
-        {
-            message = ex.Message,
-            exceptionType = ex.GetType().FullName,
-            stackTrace = ex.StackTrace
-        });
+        return BadRequest($"{ex}");
 
     }
   }
