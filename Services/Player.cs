@@ -19,7 +19,7 @@ public class Player(Database.Context sport)
   {
     var player = await sport.Players
         // .Include(p => p.ReceivedTeamAffiliationRequests)
-        // .Include(p => p.SentTeamAffiliationRequests)
+        .Include(p => p.SentTeamAffiliationRequests)
         .FirstOrDefaultAsync(p => p.UniqueId == uniqueId);
 
     if (player is null) return null;
@@ -30,9 +30,9 @@ public class Player(Database.Context sport)
         .Take(1)
         .LoadAsync();
 
-    await sport.Entry(player)
-        .Collection(p => p.ReceivedTeamAffiliationRequests)
-        .LoadAsync();
+    // await sport.Entry(player)
+    //     .Collection(p => p.ReceivedTeamAffiliationRequests)
+    //     .LoadAsync();
     
     // await sport.Entry(player)
     //     .Collection(p => p.SentTeamAffiliationRequests)
