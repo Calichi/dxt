@@ -18,11 +18,21 @@ public class Player(Database.Context sport)
   public async Task<Model.Player?> Get(string uniqueId)
   {
     var player = await sport.Players
-        // .Include(p => p.ReceivedTeamAffiliationRequests)
-        .Include(p => p.SentTeamAffiliationRequests)
-        .FirstOrDefaultAsync(p => p.UniqueId == uniqueId);
+      .FirstOrDefaultAsync(p => p.UniqueId == uniqueId);
 
     if (player is null) return null;
+
+    var sentTar = await sport.TeamAffiliationRequests.Where(
+      tar =>
+        tar.Transmitter.Id == player.Id
+        && !tar.HasTransmitterProcessed
+    ).ToListAsync();
+
+    var receivedTar = await sport.TeamAffiliationRequests.Where(
+      tar =>
+        tar.Receiver.Id == player.Id
+        && !tar.HasReceiverProcessed
+    ).ToListAsync();
 
     await sport.Entry(player)
         .Collection(p => p.Teams)
@@ -30,14 +40,8 @@ public class Player(Database.Context sport)
         .Take(1)
         .LoadAsync();
 
-    // await sport.Entry(player)
-    //     .Collection(p => p.ReceivedTeamAffiliationRequests)
-    //     .LoadAsync();
-    
-    // await sport.Entry(player)
-    //     .Collection(p => p.SentTeamAffiliationRequests)
-    //     .LoadAsync();
-    
+    player.ReceivedTeamAffiliationRequests = receivedTar;
+    player.SentTeamAffiliationRequests = sentTar;
     return player;
   }
 
