@@ -34,9 +34,9 @@ public class Player(Database.Context sport)
         .Collection(p => p.ReceivedTeamAffiliationRequests)
         .LoadAsync();
     
-    await sport.Entry(player)
-        .Collection(p => p.SentTeamAffiliationRequests)
-        .LoadAsync();
+    // await sport.Entry(player)
+    //     .Collection(p => p.SentTeamAffiliationRequests)
+    //     .LoadAsync();
     
     return player;
   }
